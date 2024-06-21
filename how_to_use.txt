@@ -1,0 +1,28 @@
+### HOW TO USE ###
+
+- Fill in data_file.txt with the data required
+- Save data_file.txt
+- Run program
+
+You can modify parameters for pings and SSH/Telnet sessions using .cfg file.
+
+Understanding "device_type" entry in .cfg file (See [device_type_supported_PLATFORMS.txt] located in "info" directory to get more info):
+
+	Connection mode (SSH/Telnet) is based on "device_type" value configured in .cfg file.
+	Selecting a device_type with "telnet" keyword will perform Telnet, else SSH.
+
+	- SSH:
+	      device_type: autodetect -> Program will detect the best match to set device_type and perform SSH session.
+	      device_type: generic -> Program will use generic settings to perform SSH session. Use only if you do not know target device vendor.
+
+	- TELNET:
+	      device_type: generic_telnet -> Program will use generic settings to perform Telnet session. Use only if you do not know target device vendor.
+
+	Using generic device_types (generic, generic_telnet), may cause issues performing SSH/Telnet sessions (especially generic_telnet). Use at your own risk.
+
+You can place files containing commands in "config_files" directory and use that files to apply the commands contained in them.
+(e.g in data_file.txt -> -COMMANDS: -> <import=filename.txt> -> program will take commands from filename.txt and will apply them to devices)
+
+A log file located in "logs" directory will be created after program ends successfully.
+
+If you run program and "data_file.txt" file, ".cfg" file, "config_files" directory or "logs" directory are not found, program will create them automatically with default values.

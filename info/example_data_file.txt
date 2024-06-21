@@ -1,0 +1,51 @@
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+### -USERNAME: Device username (Optional, mandatory if "-SSH_TELNET:" entry is set to "y")
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+### -PASSWORD: Device password (Optional, mandatory if "-SSH_TELNET:" entry is set to "y")
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+### -ENABLE_PASSWORD: Device enable password (Optional)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+### -HOST: Target IP (Mandatory), pings, SSH/Telnet sessions or both will be performed. You can concatenate unique ip and ranges(ip_start - ip_end) using ","
+           (e.g. -> 192.168.1.1 - 192.168.1.5 <step=2>, 192.168.1.8, 192.168.1.10, 192.168.1.15 - 192.168.1.25)
+           (Step property: You can add step to ranges e.g. -> 192.168.1.1 - 192.168.1.5 <step=2> -> only .1, .3, .5 will be used)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+### -PING: (Mandatory, y/n), "y" to perform pings, "n" to do not. If "-SSH_TELNET:" entry is set to "y", program will SSH/Telnet just to reachable hosts instead of all.
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+### -SSH_TELNET: (Mandatory, y/n), "y" to perform SSH/Telnet session, "n" to do not.
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+### -FILES: (Optional, only Cisco vendor) You can concatenate filenames using "," (e.g. -> any_filename.any_extension, WF-TO-SW-05.cfg, ios-17.06.05-SPA.bin)
+            If copy command, program will check if file is already in device flash and if yes, it will skip copy command. Leave blank, will force copy.
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+### -COMMANDS: Commands to perform (Optional), You will need to provide commands to enter config mode or exit if needed.
+               See [handled_vendors.txt] located in "info" directory in order to know which commands are handled for which vendor.
+               Typing enter and go will send return/enter to device.
+               Typing command to reboot + and go (e.g. reload and go), program will wait SSH/Telnet session to be restablished and will continue performing commands.
+               |IMPORTANT| You must use timeout property for commands based on time, that takes undefined time (more than 10s) to be completed
+               <timeout=X> (X value in seconds) e.g. -> install remove inactive <timeout=300>, copy tftp://1.1.1.1/any.txt flash: <timeout=1200>
+               Use files located in "config_files" directory typing <import=any_filename.txt>, program will import commands from file "any_filename.txt"
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-USERNAME: admin
+-PASSWORD: cisco
+-ENABLE_PASSWORD: 
+-HOST: 192.168.1.0 - 192.168.1.10, 192.168.1.15, 192.168.1.16, 192.168.1.20 - 192.168.1.30 <step=2>, 192.168.1.35, 192.168.1.39
+-PING: y
+-SSH_TELNET: y
+-FILES: ios-17.05.06.bin
+
+-COMMANDS: Paste your commands below. One command per line. Do not delete this line.
+
+sh run
+<import=any.txt> (any.txt will be a file with that name located in config_files containing commands to perform)
+copy tftp://192.168.1.254/ios-17.05.06.bin flash: <timeout=1200> (Only Cisco vendor, program will check if ios-17.05.06.bin is already in device flash and will copy it if not present)
+copy tftp://192.168.1.254/other_file.bin flash: <timeout=1200> (Only Cisco vendor, program wont check if other_file.bin is already in device flash and will copy it)
+conf t
+do install remove inactive <timeout=300>
+enter and go
+do dir
+int g0/0
+shutdown
+end
+sh run
+
+
