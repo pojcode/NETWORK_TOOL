@@ -1,8 +1,0 @@
-### HANDLED VENDORS ###
-
-Based on device_type inside file [device_type_supported_PLATFORMS.txt] located in "info" directory.
-
-- device_type -> cisco_ios, cisco_ios_telnet, cisco_xe
-	
-	No extra input performing these commands:
-		reload, delete, write, write erase, install remove inactive
